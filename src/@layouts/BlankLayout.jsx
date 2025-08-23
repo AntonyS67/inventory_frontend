@@ -1,6 +1,10 @@
 'use client'
 
 // Third-party Imports
+import { useLayoutEffect } from 'react'
+
+import { useRouter } from 'next/navigation'
+
 import classnames from 'classnames'
 
 // Hook Imports
@@ -18,6 +22,16 @@ const BlankLayout = props => {
   const { settings } = useSettings()
 
   useLayoutInit(systemMode)
+
+  const router = useRouter()
+
+  useLayoutEffect(() => {
+    const token = localStorage.getItem('accessToken')
+
+    if (token != null && token !== undefined) {
+      router.push('/')
+    }
+  }, [])
 
   return (
     <div className={classnames(blankLayoutClasses.root, 'is-full bs-full')} data-skin={settings.skin}>
