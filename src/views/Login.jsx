@@ -21,6 +21,8 @@ import Divider from '@mui/material/Divider'
 import classnames from 'classnames'
 
 // Component Imports
+import { Controller, useForm } from 'react-hook-form'
+
 import Link from '@components/Link'
 import Logo from '@components/layout/shared/Logo'
 import CustomTextField from '@core/components/mui/TextField'
@@ -31,6 +33,7 @@ import themeConfig from '@configs/themeConfig'
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useSettings } from '@core/hooks/useSettings'
+import { login } from '@services/auth.service'
 
 // Styled Custom Components
 const LoginIllustration = styled('img')(({ theme }) => ({
@@ -59,6 +62,8 @@ const MaskImg = styled('img')({
 const LoginV2 = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
+  const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Vars
   const darkImg = '/images/pages/auth-mask-dark.png'
@@ -84,6 +89,33 @@ const LoginV2 = ({ mode }) => {
   )
 
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  })
+
+  const onSubmit = async data => {
+    setError(false)
+    const response = await login(data.username, data.password)
+
+    console.log(response)
+
+    if (response.isSuccess) {
+      localStorage.setItem('accessToken', response.token)
+      localStorage.setItem('user', JSON.stringify(response.user))
+      router.push('/')
+    } else {
+      setError(true)
+      setErrorMessage(response.message)
+    }
+  }
 
   return (
     <div className='flex bs-full justify-center'>
@@ -113,31 +145,64 @@ const LoginV2 = ({ mode }) => {
             <Typography variant='h4'>{`Welcome to ${themeConfig.templateName}! 👋🏻`}</Typography>
             <Typography>Please sign-in to your account and start the adventure</Typography>
           </div>
+          {error && (
+            <div className='flex flex-col gap-1 text-center'>
+              <Typography className='text-red'>{errorMessage}</Typography>
+            </div>
+          )}
           <form
             noValidate
             autoComplete='off'
-            onSubmit={e => {
-              e.preventDefault()
-              router.push('/')
-            }}
+            onSubmit={handleSubmit(data => onSubmit(data))}
             className='flex flex-col gap-5'
           >
-            <CustomTextField autoFocus fullWidth label='Email or Username' placeholder='Enter your email or username' />
-            <CustomTextField
-              fullWidth
-              label='Password'
-              placeholder='············'
-              id='outlined-adornment-password'
-              type={isPasswordShown ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton edge='end' onClick={handleClickShowPassword} onMouseDown={e => e.preventDefault()}>
-                      <i className={isPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
-                    </IconButton>
-                  </InputAdornment>
-                )
+            <Controller
+              name='username'
+              control={control}
+              rules={{
+                required: true,
+                minLength: 3,
+                maxLength: 20
               }}
+              render={({ field }) => (
+                <CustomTextField
+                  {...field}
+                  autoFocus
+                  fullWidth
+                  label='Email or Username'
+                  placeholder='Enter your email or username'
+                  {...(errors.username && { error: true, helper: 'This field is required' })}
+                />
+              )}
+            />
+            <Controller
+              name='password'
+              control={control}
+              rules={{
+                required: true,
+                minLength: 1,
+                maxLength: 20
+              }}
+              render={({ field }) => (
+                <CustomTextField
+                  {...field}
+                  fullWidth
+                  label='Password'
+                  placeholder='············'
+                  id='outlined-adornment-password'
+                  type={isPasswordShown ? 'text' : 'password'}
+                  {...(errors.password && { error: true, helper: 'This field is required' })}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton edge='end' onClick={handleClickShowPassword} onMouseDown={e => e.preventDefault()}>
+                          <i className={isPasswordShown ? 'tabler-eye-off' : 'tabler-eye'} />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              )}
             />
             <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
               <FormControlLabel control={<Checkbox />} label='Remember me' />
