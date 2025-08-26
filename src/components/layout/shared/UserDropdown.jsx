@@ -62,6 +62,8 @@ const UserDropdown = () => {
 
   const handleUserLogout = async () => {
     // Redirect to login page
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('user')
     router.push('/login')
   }
 
