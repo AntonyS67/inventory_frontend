@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { Button, Divider, Drawer, IconButton, MenuItem, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -22,6 +24,15 @@ export default function AddUserDrawer(props) {
       role: '1'
     }
   })
+
+  useEffect(() => {
+    resetForm({
+      names: userFormData.names || '',
+      lastnames: userFormData.lastnames || '',
+      username: userFormData.username || '',
+      role: userFormData.role || '0'
+    })
+  }, [userFormData, resetForm])
 
   const onSubmit = async data => {
     const newUser = {

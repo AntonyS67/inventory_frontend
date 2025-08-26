@@ -63,7 +63,7 @@ export default function UserListTable({ userData, setReload, reload }) {
       header: 'Acciones',
       cell: ({ row }) => (
         <div className='flex items-center'>
-          <IconButton title='Editar'>
+          <IconButton title='Editar' onClick={() => openEditForm(row)}>
             <i className='tabler-edit' />
           </IconButton>
           <IconButton title='Eliminar'>
@@ -89,6 +89,12 @@ export default function UserListTable({ userData, setReload, reload }) {
     },
     getPaginationRowModel: getPaginationRowModel()
   })
+
+  const openEditForm = row => {
+    setUserData(row.original)
+    setTitleForm('Editar Usuario')
+    setAddUserOpen(true)
+  }
 
   return (
     <>
