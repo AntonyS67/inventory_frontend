@@ -2,6 +2,8 @@
 import Button from '@mui/material/Button'
 
 // Layout Imports
+import { ToastContainer } from 'react-toastify'
+
 import LayoutWrapper from '@layouts/LayoutWrapper'
 import VerticalLayout from '@layouts/VerticalLayout'
 import HorizontalLayout from '@layouts/HorizontalLayout'
@@ -27,6 +29,7 @@ const Layout = async ({ children }) => {
 
   return (
     <Providers direction={direction}>
+      <ToastContainer />
       <ProtectedLayout>
         <LayoutWrapper
           systemMode={systemMode}

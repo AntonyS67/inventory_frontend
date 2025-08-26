@@ -16,6 +16,8 @@ import TablePaginationComponent from '@/components/TablePaginationComponent'
 
 import styles from '@core/styles/table.module.css'
 import AddUserDrawer from './AddUserDrawer'
+import { deleteUser } from '@/services/user.service'
+import { Notify } from '@/utils/notification'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -66,7 +68,7 @@ export default function UserListTable({ userData, setReload, reload }) {
           <IconButton title='Editar' onClick={() => openEditForm(row)}>
             <i className='tabler-edit' />
           </IconButton>
-          <IconButton title='Eliminar'>
+          <IconButton title='Eliminar' onClick={() => handleDelete(row)}>
             <i className='tabler-trash' />
           </IconButton>
         </div>
@@ -94,6 +96,17 @@ export default function UserListTable({ userData, setReload, reload }) {
     setUserData(row.original)
     setTitleForm('Editar Usuario')
     setAddUserOpen(true)
+  }
+
+  const handleDelete = async row => {
+    const response = await deleteUser(row.original.id)
+
+    if (response.isSuccess) {
+      setReload(!reload)
+      Notify(response.message, 'success')
+    } else {
+      Notify(response.messageException, 'error')
+    }
   }
 
   return (

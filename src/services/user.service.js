@@ -25,3 +25,9 @@ export async function saveUser(user) {
 
   return response?.data
 }
+
+export async function deleteUser(id) {
+  const response = await axiosInstance.delete(`/users/delete?id=${id}`)
+
+  return response?.data
+}
