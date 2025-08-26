@@ -15,6 +15,7 @@ import CustomAvatar from '@/@core/components/mui/Avatar'
 import TablePaginationComponent from '@/components/TablePaginationComponent'
 
 import styles from '@core/styles/table.module.css'
+import AddUserDrawer from './AddUserDrawer'
 
 // Column Definitions
 const columnHelper = createColumnHelper()
@@ -94,13 +95,24 @@ export default function UserListTable({ userData, setReload, reload }) {
       <Card>
         <CardHeader title='Usuarios' />
         <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
-          <CustomTextField select value={10} onChange={() => {}} className='max-sm:is-full sm:is-[70px]'>
+          <CustomTextField
+            select
+            value={table.getState().pagination.pageSize}
+            onChange={e => table.setPageSize(Number(e.target.value))}
+            className='max-sm:is-full sm:is-[70px]'
+          >
             <MenuItem value='10'>10</MenuItem>
             <MenuItem value='25'>25</MenuItem>
             <MenuItem value='50'>50</MenuItem>
           </CustomTextField>
           <div className='flex flex-col sm:flex-row max-sm:is-full items-start sm:items-center gap-4'>
-            <Button variant='contained' startIcon={<i className='tabler-plus' />} onClick={() => {}}>
+            <Button
+              variant='contained'
+              startIcon={<i className='tabler-plus' />}
+              onClick={() => {
+                setAddUserOpen(!addUserOpen), setTitleForm('Nuevo Usuario'), setUserData({})
+              }}
+            >
               Add New User
             </Button>
           </div>
@@ -142,6 +154,16 @@ export default function UserListTable({ userData, setReload, reload }) {
           }}
         />
       </Card>
+      <AddUserDrawer
+        open={addUserOpen}
+        userData={userData}
+        userFormData={userFormData}
+        titleForm={titleForm}
+        handleClose={() => setAddUserOpen(!addUserOpen)}
+        setData={setData}
+        setReload={setReload}
+        reload={reload}
+      />
     </>
   )
 }
