@@ -58,8 +58,8 @@ const VerticalMenu = ({ scrollMenu }) => {
         <MenuItem href='/home' icon={<i className='tabler-smart-home' />}>
           Home
         </MenuItem>
-        <MenuItem href='/about' icon={<i className='tabler-info-circle' />}>
-          About
+        <MenuItem href='/purchases' icon={<i className='tabler-building-store' />}>
+          Compras
         </MenuItem>
       </Menu>
       <MenuSection label='Mantenimiento'>
@@ -75,6 +75,12 @@ const VerticalMenu = ({ scrollMenu }) => {
           </MenuItem>
           <MenuItem href='/suppliers' icon={<i className='tabler-box' />}>
             Proveedores
+          </MenuItem>
+          <MenuItem href='/settings' icon={<i className='tabler-settings' />}>
+            Configuracion
+          </MenuItem>
+          <MenuItem href='/products' icon={<i className='tabler-archive' />}>
+            Productos
           </MenuItem>
         </Menu>
       </MenuSection>

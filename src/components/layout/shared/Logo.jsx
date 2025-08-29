@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Third-party Imports
 import styled from '@emotion/styled'
@@ -15,6 +15,7 @@ import themeConfig from '@configs/themeConfig'
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
 import { useSettings } from '@core/hooks/useSettings'
+import { getSetting } from '@/services/setting.service'
 
 const LogoText = styled.span`
   color: ${({ color }) => color ?? 'var(--mui-palette-text-primary)'};
@@ -38,11 +39,22 @@ const Logo = ({ color }) => {
   // Hooks
   const { isHovered, transitionDuration, isBreakpointReached } = useVerticalNav()
   const { settings } = useSettings()
+  const [setting, setSetting] = useState({})
 
   // Vars
   const { layout } = settings
 
+  const fetchData = async () => {
+    const response = await getSetting()
+
+    if (response.isSuccess) {
+      setSetting(response.item)
+    }
+  }
+
   useEffect(() => {
+    fetchData()
+
     if (layout !== 'collapsed') {
       return
     }
@@ -60,16 +72,19 @@ const Logo = ({ color }) => {
   return (
     <div className='flex items-center'>
       <VuexyLogo className='text-2xl text-primary' />
-      <LogoText
-        color={color}
-        ref={logoTextRef}
-        isHovered={isHovered}
-        isCollapsed={layout === 'collapsed'}
-        transitionDuration={transitionDuration}
-        isBreakpointReached={isBreakpointReached}
-      >
-        {themeConfig.templateName}
-      </LogoText>
+      {setting != null && Object.keys(setting).length > 0 && (
+        <LogoText
+          color={color}
+          ref={logoTextRef}
+          isHovered={isHovered}
+          isCollapsed={layout === 'collapsed'}
+          transitionDuration={transitionDuration}
+          isBreakpointReached={isBreakpointReached}
+        >
+          {/* {themeConfig.templateName} */}
+          {setting.system_name}
+        </LogoText>
+      )}
     </div>
   )
 }
