@@ -55,11 +55,17 @@ const VerticalMenu = ({ scrollMenu }) => {
         renderExpandedMenuItemIcon={{ icon: <i className='tabler-circle text-xs' /> }}
         menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
       >
-        <MenuItem href='/home' icon={<i className='tabler-smart-home' />}>
-          Home
+        <MenuItem href='/home' icon={<i className='tabler-dashboard' />}>
+          Dashboard
         </MenuItem>
         <MenuItem href='/purchases' icon={<i className='tabler-building-store' />}>
           Compras
+        </MenuItem>
+        <MenuItem href='/sales' icon={<i className='tabler-shopping-cart' />}>
+          Ventas
+        </MenuItem>
+        <MenuItem href='/returns' icon={<i className='tabler-refresh' />}>
+          Devoluciones
         </MenuItem>
       </Menu>
       <MenuSection label='Mantenimiento'>

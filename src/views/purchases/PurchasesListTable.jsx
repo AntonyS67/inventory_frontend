@@ -177,7 +177,7 @@ export default function PurchasesListTable({ dataForm, type, setReload, reload }
   return (
     <>
       <Card>
-        <CardHeader title='Compras' />
+        <CardHeader title={type == PURCHASE ? 'Compras' : type == RETURN ? 'Devoluciones' : 'Ventas'} />
         <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
           <CustomTextField
             select
