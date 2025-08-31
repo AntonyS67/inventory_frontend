@@ -79,7 +79,7 @@ const UserDropdown = () => {
         <Avatar
           ref={anchorRef}
           alt='John Doe'
-          src='/images/avatars/1.png'
+          src={localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).photo : '/images/avatars/1.png'}
           onClick={handleDropdownOpen}
           className='cursor-pointer bs-[38px] is-[38px]'
         />
@@ -103,10 +103,25 @@ const UserDropdown = () => {
               <ClickAwayListener onClickAway={e => handleDropdownClose(e)}>
                 <MenuList>
                   <div className='flex items-center plb-2 pli-6 gap-2' tabIndex={-1}>
-                    <Avatar alt='John Doe' src='/images/avatars/1.png' />
+                    <Avatar
+                      alt={
+                        localStorage.getItem('user')
+                          ? JSON.parse(localStorage.getItem('user')).photo
+                          : '/images/avatars/1.png'
+                      }
+                      src={
+                        localStorage.getItem('user')
+                          ? JSON.parse(localStorage.getItem('user')).photo
+                          : '/images/avatars/1.png'
+                      }
+                    />
                     <div className='flex items-start flex-col'>
                       <Typography className='font-medium' color='text.primary'>
-                        John Doe
+                        {localStorage.getItem('user')
+                          ? JSON.parse(localStorage.getItem('user')).names +
+                            ' ' +
+                            JSON.parse(localStorage.getItem('user')).lastnames
+                          : 'John Doe'}
                       </Typography>
                       <Typography variant='caption'>admin@vuexy.com</Typography>
                     </div>
