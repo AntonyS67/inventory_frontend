@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Divider, Drawer, IconButton, MenuItem, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
@@ -6,9 +6,11 @@ import { Controller, useForm } from 'react-hook-form'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { saveUser } from '@/services/user.service'
 import { Notify } from '@/utils/notification'
+import CustomInputImage from '@/components/images/CustomInputImage'
 
 export default function AddUserDrawer(props) {
   const { open, handleClose, titleForm, userFormData, setReload, reload } = props
+  const [files, setFiles] = useState([])
 
   // Hooks
   const {
@@ -32,12 +34,13 @@ export default function AddUserDrawer(props) {
       username: userFormData.username || '',
       role: userFormData.role || '0'
     })
+    setFiles([{ name: userFormData.names, uri: userFormData.photo }])
   }, [userFormData, resetForm])
 
   const onSubmit = async data => {
     const newUser = {
       id: Object.keys(userFormData).length > 0 ? userFormData.id : 0,
-      avatar: `/images/avatars/${Math.floor(Math.random() * 8) + 1}.png`,
+      photo: files.length > 0 ? files[0] : '',
       names: data.names,
       lastnames: data.lastnames,
       username: data.username,
@@ -80,6 +83,7 @@ export default function AddUserDrawer(props) {
       <Divider />
       <div>
         <form onSubmit={handleSubmit(data => onSubmit(data))} className='flex flex-col gap-6 p-6'>
+          <CustomInputImage files={files} setFiles={setFiles} />
           <Controller
             name='names'
             control={control}

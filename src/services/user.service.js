@@ -14,7 +14,7 @@ export async function saveUser(user) {
   formData.append('lastnames', user.lastnames)
   formData.append('username', user.username)
   formData.append('password', user.password)
-  formData.append('photo', 'photo')
+  formData.append('photo', user.photo)
   formData.append('role', user.role)
 
   const response = await axiosInstance.post('/users/create', formData, {

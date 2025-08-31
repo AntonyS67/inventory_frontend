@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, Divider, Drawer, IconButton, MenuItem, Typography } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
@@ -8,9 +8,11 @@ import { Controller, useForm } from 'react-hook-form'
 import CustomTextField from '@/@core/components/mui/TextField'
 import { saveProduct } from '@/services/product.service'
 import { Notify } from '@/utils/notification'
+import CustomInputImage from '@/components/images/CustomInputImage'
 
 export default function AddProductDrawer(props) {
   const { open, handleClose, titleForm, formData, setReload, reload, suppliersData } = props
+  const [files, setFiles] = useState([])
 
   // Hooks
   const {
@@ -35,7 +37,7 @@ export default function AddProductDrawer(props) {
       name: data.name,
       description: data.description,
       price: data.price,
-      photo: '@avion_2.png;type=image/png',
+      photo: files.length > 0 ? files[0] : '',
       Supplierid: data.Supplierid,
       quantity: data.quantity
     }
@@ -61,6 +63,7 @@ export default function AddProductDrawer(props) {
       Supplierid: formData.supplier?.id || '',
       quantity: formData.quantity || 0
     })
+    setFiles([{ name: formData.name, uri: formData.photo }])
   }
 
   const handleReset = () => {
@@ -91,6 +94,7 @@ export default function AddProductDrawer(props) {
       <Divider />
       <div>
         <form onSubmit={handleSubmit(data => onSubmit(data))} className='flex flex-col gap-6 p-6'>
+          <CustomInputImage files={files} setFiles={setFiles} />
           <Controller
             name='name'
             control={control}

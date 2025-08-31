@@ -26,7 +26,7 @@ const getAvatar = params => {
   const { avatar } = params
 
   if (avatar != undefined) {
-    return <CustomAvatar src={'/images/avatar/' + avatar} size={34} />
+    return <CustomAvatar src={avatar} size={34} />
   } else {
     return <CustomAvatar size={34} src='/images/avatar/1.png' />
   }
@@ -58,7 +58,7 @@ export default function ProductListTable({ dataForm, setReload, reload, supplier
   const columns = useMemo(() => [
     columnHelper.accessor('photo', {
       header: 'Imagen',
-      cell: ({ row }) => <div className='flex items-center gap-4'>{getAvatar({ avatar: row.original.avatar })}</div>
+      cell: ({ row }) => <div className='flex items-center gap-4'>{getAvatar({ avatar: row.original.photo })}</div>
     }),
     columnHelper.accessor('name', {
       cell: info => info.getValue(),

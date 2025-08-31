@@ -26,7 +26,7 @@ const getAvatar = params => {
   const { avatar } = params
 
   if (avatar != '') {
-    return <CustomAvatar src={'/images/avatar/' + avatar} size={34} />
+    return <CustomAvatar src={avatar} size={34} />
   } else {
     return <CustomAvatar size={34} src='/images/avatar/1.png' />
   }
@@ -43,7 +43,7 @@ export default function UserListTable({ userData, setReload, reload }) {
       header: 'Nombre',
       cell: ({ row }) => (
         <div className='flex items-center gap-4'>
-          {getAvatar({ avatar: row.original.avatar })}
+          {getAvatar({ avatar: row.original.photo })}
           <div className='flex flex-col'>
             <Typography color='text.primary' className='font-medium'>
               {row.original.names}
